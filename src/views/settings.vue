@@ -3,7 +3,7 @@
     <div class="top">
       <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">角色管理</el-menu-item>
-        <el-menu-item index="2">公司信息</el-menu-item>
+        <el-menu-item index="2" v-color="'red'">公司信息</el-menu-item>
       </el-menu>
     </div>
 
@@ -11,6 +11,8 @@
       <UserManage v-if="activeIndex == 1"></UserManage>
       <CorpInfo v-else></CorpInfo>
     </div>
+
+    <input type="text" v-focus />
   </div>
 </template>
 
@@ -30,6 +32,24 @@ export default {
   methods: {
     handleSelect(key) {
       this.activeIndex = key
+    }
+  },
+  created() {
+    console.log(this.$router)
+  },
+  //局部指令，需要定义在  directives 的选项
+  directives: {
+    color: {
+      bind: function (el, binding) {
+        console.log("22", binding.value)
+        el.style.color = binding.value
+      }
+    },
+    //聚焦
+    focus: {
+      inserted: function (el) {
+        el.focus()
+      }
     }
   }
 }

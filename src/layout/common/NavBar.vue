@@ -6,47 +6,15 @@
     <el-menu
       :default-active="$route.path"
       class="el-menu-vertical-demo"
-      background-color="#4979fa"
       text-color="#fff"
+      background-color="#4a7afb"
       active-text-color="#63b9fe"
       :collapse="flag"
       router
     >
-      <el-menu-item index="/shouye">
-        <i class="el-icon-menu" color="#fff"></i>
-        <span slot="title">{{ $t("route.dashboard") }}</span>
-      </el-menu-item>
-      <el-menu-item index="/zuzhi">
-        <i class="el-icon-menu"></i>
-        <span slot="title">组织架构</span>
-      </el-menu-item>
-      <el-menu-item index="/yuangong">
-        <i class="el-icon-menu"></i>
-        <span slot="title">员工</span>
-      </el-menu-item>
-      <el-menu-item index="/gongsishezhi">
-        <i class="el-icon-setting"></i>
-        <span slot="title">公司设置</span>
-      </el-menu-item>
-      <el-menu-item index="/quanxian">
-        <i class="el-icon-setting"></i>
-        <span slot="title">权限设置</span>
-      </el-menu-item>
-      <el-menu-item index="5">
-        <i class="el-icon-menu"></i>
-        <span slot="title">社保</span>
-      </el-menu-item>
-      <el-menu-item index="/kaoqin">
-        <i class="el-icon-menu"></i>
-        <span slot="title">考勤</span>
-      </el-menu-item>
-      <el-menu-item index="7">
-        <i class="el-icon-menu"></i>
-        <span slot="title">工资</span>
-      </el-menu-item>
-      <el-menu-item index="8">
-        <i class="el-icon-menu"></i>
-        <span slot="title">审批</span>
+      <el-menu-item v-for="item in mentList" :index="item.path">
+        <i :class="item.meta.icon" color="#fff"></i>
+        <span slot="title"> {{ $t(`route.${item.meta.title}`) }}</span>
       </el-menu-item>
     </el-menu>
   </div>
@@ -57,12 +25,17 @@ import { EventBus } from "@/eventbus"
 export default {
   data() {
     return {
-      flag: false
+      flag: false,
+      mentList: []
     }
   },
 
   methods: {},
   created() {
+    // 获取本地存储的菜单数据
+    this.mentList = JSON.parse(localStorage.getItem("resultMenulits"))
+  },
+  mounted() {
     EventBus.$on("Collapse", (flag) => {
       this.flag = flag
     })
